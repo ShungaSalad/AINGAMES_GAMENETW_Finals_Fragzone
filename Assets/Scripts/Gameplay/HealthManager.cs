@@ -16,7 +16,7 @@ public class HealthManager : MonoBehaviour
     private int explosionCount = 5; // How many extra explosions to spawn
 
     [Header("Health Bar Settings")]
-    [SerializeField] private Slider healthBar;
+    [SerializeField] public Slider healthBar;
 
     private bool isDead = false;
     

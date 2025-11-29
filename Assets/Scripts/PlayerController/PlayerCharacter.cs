@@ -1,9 +1,11 @@
-using System;
-using Unity.Jobs;
+using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerCharacter : MonoBehaviour, IPlayerController
+public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerController
 {
     //Inherited from IPlayerController
     [Header("Base Values")]
@@ -46,9 +48,16 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
 
     [SerializeField]
     private Weapon currentWeapon;
-
+    Rigidbody body;
     private Gun _currentGun;
     public Gun CurrentGun => _currentGun;
+    public HealthManager hpman;
+
+    [Header("Network sync variables")]
+    private Vector3 NetworkPosition;
+    private Quaternion NetworkRotation;
+    private float NetCurrentHP, NetMaximumHP, NetCurrentST, NetMaximumST;
+
     void Awake()
     {
         //Setting Inherited Variables - Base Values 
@@ -56,18 +65,15 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
         RunningSpeed = RunSPD;
         JumpForce = JForce;
         Gravity = Grav;
-
         //Setting Inherited Variables - Camera Reference and Rotation
         PlayerCamera = Cam;
         LookSpeed = LookSPD;
         LookXLimit = 45.0f;
-
         //Setting Inherited Variables - Controller Properties
         CharCon = GetComponent<CharacterController>();
         CharacterController = CharCon;
         MoveDirection = Vector3.zero;
         RotationX = 0.0f;
-
         //Setting Inherited Variables - Commom Values & Movement Condition
         CanMove = Moveable;
         BaseHP = MaxHP;
@@ -75,18 +81,14 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
         BaseStamina = MaxStam;
         TempStamina = CurrStam;
         IsAlive = Living;
-
         //Initialize Current HP and Stamina
         TempHP = BaseHP;
         TempStamina = BaseStamina;
-
-        //Initialize Current Gun Type
         _currentGun = Gun.None;
     }
 
     void RefreshStats()
     {
-        //Refreshes Status
         LookSpeed = LookSPD;
         CharacterController = CharCon;
         MoveDirection = MovDir;
@@ -182,46 +184,96 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        body = GetComponent<Rigidbody>();
         RecoveringStamina = false;
         RefreshStats();
+        NetworkPosition = transform.position;
+        NetworkRotation = transform.rotation;
+        NetCurrentHP = CurrHP;
+        NetMaximumHP = MaxHP;
+        NetCurrentST = CurrStam;
+        NetMaximumST = MaxStam;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //RefreshStats();
-        if (CurrHP <= 0) { Living = false; } else { Living = true; }
-        if (Living)
-        {
-            if (CurrStam <= MaxStam)
-            {
-                if (MovDir == Vector3.zero && !RecoveringStamina)
-                {
-                    TimeBeforeRecover = 3.0f;
-                    RecoveringStamina = true;
-                }
-                if (RecoveringStamina)
-                {
-                    if (TimeBeforeRecover > 0) { TimeBeforeRecover -= 1.0f * Time.deltaTime; }
-                    else { TimeBeforeRecover = 0.0f; CurrStam += 1.0f * Time.deltaTime; }
-                }
-            }
-            ControlCharacter();
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        UpdateAttack();
+        MultiplayerUpdate();
     }
-    
+
+    private void MultiplayerUpdate()
+    {
+        if (photonView.IsMine) //for the local player
+        {
+            PlayerCamera.enabled = true;
+            RefreshStats();
+            if (CurrHP <= 0) { Living = false; } else { Living = true; }
+            if (Living)
+            {
+                if (CurrStam <= MaxStam)
+                {
+                    if (MovDir == Vector3.zero && !RecoveringStamina)
+                    {
+                        TimeBeforeRecover = 3.0f;
+                        RecoveringStamina = true;
+                    }
+                    if (RecoveringStamina)
+                    {
+                        if (TimeBeforeRecover > 0) { TimeBeforeRecover -= 1.0f * Time.deltaTime; }
+                        else { TimeBeforeRecover = 0.0f; CurrStam += 1.0f * Time.deltaTime; }
+                    }
+                }
+                ControlCharacter();
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            hpman.healthBar.value = TempHP;
+            UpdateAttack();
+        }
+        else //for the remote players
+        {
+            PlayerCamera.enabled = false;
+            transform.position = Vector3.Lerp(transform.position, NetworkPosition, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, NetworkRotation, Time.deltaTime * 10f);
+            BaseHP = NetMaximumHP;
+            TempHP = NetCurrentHP;
+            BaseStamina = NetMaximumST;
+            TempStamina = NetCurrentST;
+            hpman.healthBar.value = TempHP;
+        }
+    }
+
     private void UpdateAttack()
     {
-        //Attacks with Weapon when mouse button is hit
         if (Input.GetMouseButtonDown(0))
         {
             currentWeapon.OnShoot();
+        }
+    }
+
+    //Photon Built-in Sync Method
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting) // Local player -> send data
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(CurrHP);
+            stream.SendNext(CurrStam);
+            stream.SendNext(MaxHP);
+            stream.SendNext(MaxStam);
+        }
+        else // Remote player -> receive data
+        {
+            NetworkPosition = (Vector3)stream.ReceiveNext();
+            NetworkRotation = (Quaternion)stream.ReceiveNext();
+            NetCurrentHP = (float)stream.ReceiveNext();
+            NetCurrentST = (float)stream.ReceiveNext();
+            NetMaximumHP = (float)stream.ReceiveNext();
+            NetCurrentST = (float)stream.ReceiveNext();
         }
     }
 }

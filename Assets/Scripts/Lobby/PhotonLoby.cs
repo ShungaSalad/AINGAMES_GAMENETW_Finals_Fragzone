@@ -156,6 +156,7 @@ public class PhotonLoby : MonoBehaviourPunCallbacks
     {
         Debug.Log("Tried to create a new room but failed, there must be a room with the same name");
         sysmsg.text = ErrorMSGC + "\n(" + message + ")";
+        LobbyMenuOnlineState();
     }
 
 

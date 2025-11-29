@@ -1,4 +1,3 @@
-using Autodesk.Fbx;
 using Photon.Pun.Demo.Asteroids;
 using UnityEngine;
 
