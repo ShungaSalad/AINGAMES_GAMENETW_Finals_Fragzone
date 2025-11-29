@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: f70b231347dc82b4ebca7104d07bd6d0
+  - enabled: 1
+    path: Assets/Scenes/FragZone_Level.unity
+    guid: 271b97315e5b9e449a621a53313fa057
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
