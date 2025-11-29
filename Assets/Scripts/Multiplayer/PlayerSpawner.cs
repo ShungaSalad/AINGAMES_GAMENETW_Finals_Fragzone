@@ -14,7 +14,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     [Header("Player Settings")]
     public GameObject PlayerPrefab; // must be in Resources folder
     private int PlayerId;
-    /*
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,7 +27,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
             Debug.LogWarning("Not connected to Photon or not in a room yet.");
         }
     }
-    */
+    
 
     IEnumerator DelaySpawn()
     {

@@ -356,6 +356,7 @@ MonoBehaviour:
   CurrStam: 80
   MaxStam: 100
   currentWeapon: {fileID: 2285037778392002794}
+  hpman: {fileID: 5529683481713474649}
 --- !u!54 &4975796359511201863
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -426,7 +427,8 @@ MonoBehaviour:
   Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1907421950211829362}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -539,6 +541,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 588b6c3165afea449a2b0f2b89a4e1e3, type: 3}
+--- !u!114 &5529683481713474649 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2892905163291524614, guid: 588b6c3165afea449a2b0f2b89a4e1e3, type: 3}
+  m_PrefabInstance: {fileID: 7248763773379543647}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21ba84742b7037443aed11b030139336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7711826210085420712 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1125091951296789751, guid: 588b6c3165afea449a2b0f2b89a4e1e3, type: 3}
