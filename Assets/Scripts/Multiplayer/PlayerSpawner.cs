@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -58,6 +59,14 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
             return;
         }
 
+        // Prevent double-spawning if the player already exists
+
+        if (PhotonNetwork.LocalPlayer.TagObject != null)
+        {
+            Debug.Log("Player already spawned, skipping.");
+            return;
+        }
+
         PlayerId = PhotonNetwork.LocalPlayer.ActorNumber;
         Debug.Log("PlayerID: " + PlayerId);
 
@@ -77,7 +86,13 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
                 break;
         }
         // The prefab MUST be in a folder called "Resources"
-        PhotonNetwork.Instantiate(PlayerPrefab.name, SpawnLocation.position, SpawnLocation.rotation);
+        GameObject newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, SpawnLocation.position, SpawnLocation.rotation);
+
+        PhotonNetwork.LocalPlayer.TagObject = newPlayer;
+
+
+        Debug.Log(PlayerPrefab.tag);
+        Debug.Log("Spawned player " + PlayerId + " at " + SpawnLocation.name);
     }
 
 
