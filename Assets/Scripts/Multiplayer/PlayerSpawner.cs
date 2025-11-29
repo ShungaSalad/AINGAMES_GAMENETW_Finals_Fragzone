@@ -39,14 +39,6 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log(PhotonNetwork.LocalPlayer.NickName + " has joined.");
-        if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
-        {
-            StartCoroutine(DelaySpawn());
-        }
-        else
-        {
-            Debug.LogWarning("Not connected to Photon or not in a room yet.");
-        }
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

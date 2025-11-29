@@ -205,7 +205,6 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
     {
         if (photonView.IsMine) //for the local player
         {
-            PlayerCamera.enabled = true;
             RefreshStats();
             if (CurrHP <= 0) { Living = false; } else { Living = true; }
             if (Living)
@@ -235,7 +234,6 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         }
         else //for the remote players
         {
-            PlayerCamera.enabled = false;
             transform.position = Vector3.Lerp(transform.position, NetworkPosition, Time.deltaTime * 10f);
             transform.rotation = Quaternion.Lerp(transform.rotation, NetworkRotation, Time.deltaTime * 10f);
             BaseHP = NetMaximumHP;
