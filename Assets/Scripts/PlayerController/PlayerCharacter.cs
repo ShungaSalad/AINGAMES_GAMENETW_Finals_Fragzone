@@ -206,17 +206,14 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+        UpdateAttack();
     }
 
-    void UpdateAttack()
+    private void UpdateAttack()
     {
-        if (_currentGun != Gun.None)
+        if (Input.GetMouseButtonDown(0))
         {
             currentWeapon.OnShoot();
-        }
-        else
-        {
-
         }
     }
 }
