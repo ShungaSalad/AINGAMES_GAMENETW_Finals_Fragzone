@@ -1,3 +1,5 @@
+using System;
+using Unity.Jobs;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -31,6 +33,7 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
     public float BaseHP { get; set; } //this is the character's base health
     public float TempHP { get; set; } //this is for the changing hp value
     public bool IsAlive { get; set; } //Is player alive yet?
+
     //Local Values
     public float LookSPD, WalkSPD, RunSPD, JForce, Grav;
     public Camera Cam;
@@ -40,6 +43,12 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
     public float CurrHP, MaxHP, CurrStam, MaxStam;
     float TimeBeforeRecover;
     bool RecoveringStamina;
+
+    [SerializeField]
+    private Weapon currentWeapon;
+
+    private Gun _currentGun;
+    public Gun CurrentGun => _currentGun;
     void Awake()
     {
         //Setting Inherited Variables - Base Values 
@@ -66,6 +75,7 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
         //Initialize Current HP and Stamina
         TempHP = BaseHP;
         TempStamina = BaseStamina;
+        _currentGun = Gun.None;
     }
 
     void RefreshStats()
@@ -195,6 +205,18 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+    }
+
+    void UpdateAttack()
+    {
+        if (_currentGun != Gun.None)
+        {
+            currentWeapon.OnShoot();
+        }
+        else
+        {
+
         }
     }
 }

@@ -9514,7 +9514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5adc0662bea7cfd49a609505f712b37a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LookSPD: 10
+  LookSPD: 3
   WalkSPD: 20
   RunSPD: 50
   JForce: 35

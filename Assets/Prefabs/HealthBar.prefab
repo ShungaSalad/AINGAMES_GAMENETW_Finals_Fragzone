@@ -112,10 +112,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 530652751105532962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3fe634417bb7ae42b220de8f2f69988, type: 3}
+  m_Script: {fileID: 11500000, guid: 21ba84742b7037443aed11b030139336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: MainCamera
+  maxHealth: 100
+  deathEffect: {fileID: 0}
+  explosionSpread: 3
+  explosionCount: 5
+  healthBar: {fileID: 1868748730840718778}
 --- !u!1 &879694763613306097
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1125091951296789751}
   - component: {fileID: 4345538225198261622}
-  - component: {fileID: 1738415836824393097}
+  - component: {fileID: 438862692559115247}
   - component: {fileID: 8559822085039991343}
   - component: {fileID: 2892905163291524614}
   m_Layer: 5
@@ -325,7 +329,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1738415836824393097
+--- !u!114 &438862692559115247
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -347,7 +351,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8559822085039991343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,10 +378,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4970022516126168925}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3fe634417bb7ae42b220de8f2f69988, type: 3}
+  m_Script: {fileID: 11500000, guid: 21ba84742b7037443aed11b030139336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: MainCamera
+  maxHealth: 100
+  deathEffect: {fileID: 0}
+  explosionSpread: 3
+  explosionCount: 5
+  healthBar: {fileID: 1868748730840718778}
 --- !u!1 &5831673730696632118
 GameObject:
   m_ObjectHideFlags: 0
