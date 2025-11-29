@@ -60,6 +60,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
 
     void Awake()
     {
+        
         //Setting Inherited Variables - Base Values 
         WalkingSpeed = WalkSPD;
         RunningSpeed = RunSPD;

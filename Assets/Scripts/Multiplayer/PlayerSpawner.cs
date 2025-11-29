@@ -19,6 +19,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
         {
             StartCoroutine(DelaySpawn());
@@ -40,6 +41,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log(PhotonNetwork.LocalPlayer.NickName + " has joined.");
+        SpawnPlayer();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -48,7 +50,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         // when a *new* player joins.
         Debug.Log(newPlayer.NickName + " has joined the room.");
         // You can use this to update UI lists, spawn objects, etc.
-        SpawnPlayer();
+        //SpawnPlayer();
     }
 
     void SpawnPlayer()
@@ -93,6 +95,9 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
 
         Debug.Log(PlayerPrefab.tag);
         Debug.Log("Spawned player " + PlayerId + " at " + SpawnLocation.name);
+
+        //activates camera on spawn
+        newPlayer.GetComponentInChildren<Camera>().enabled = true;
     }
 
 
