@@ -56,15 +56,18 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
         RunningSpeed = RunSPD;
         JumpForce = JForce;
         Gravity = Grav;
+
         //Setting Inherited Variables - Camera Reference and Rotation
         PlayerCamera = Cam;
         LookSpeed = LookSPD;
         LookXLimit = 45.0f;
+
         //Setting Inherited Variables - Controller Properties
         CharCon = GetComponent<CharacterController>();
         CharacterController = CharCon;
         MoveDirection = Vector3.zero;
         RotationX = 0.0f;
+
         //Setting Inherited Variables - Commom Values & Movement Condition
         CanMove = Moveable;
         BaseHP = MaxHP;
@@ -72,14 +75,18 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
         BaseStamina = MaxStam;
         TempStamina = CurrStam;
         IsAlive = Living;
+
         //Initialize Current HP and Stamina
         TempHP = BaseHP;
         TempStamina = BaseStamina;
+
+        //Initialize Current Gun Type
         _currentGun = Gun.None;
     }
 
     void RefreshStats()
     {
+        //Refreshes Status
         LookSpeed = LookSPD;
         CharacterController = CharCon;
         MoveDirection = MovDir;
@@ -182,7 +189,7 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
     // Update is called once per frame
     void Update()
     {
-        RefreshStats();
+        //RefreshStats();
         if (CurrHP <= 0) { Living = false; } else { Living = true; }
         if (Living)
         {
@@ -208,9 +215,10 @@ public class PlayerCharacter : MonoBehaviour, IPlayerController
         }
         UpdateAttack();
     }
-
+    
     private void UpdateAttack()
     {
+        //Attacks with Weapon when mouse button is hit
         if (Input.GetMouseButtonDown(0))
         {
             currentWeapon.OnShoot();
