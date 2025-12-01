@@ -30,15 +30,81 @@ public class EnemyBehavior : MonoBehaviour
     [Header("Detection Settings")]
     [SerializeField] private float detectionRange = 15f;
     private bool targetDetected = false;
+	
+	[Header("Behavior Nodes")]
+	private SequenceNode _IdleRoot;
+	private SelectorNode _EnemyMove;
+	private SequenceNode _EnemyPatrol;
+	private ActionNode _MoveToLocation;
+	private SequenceNode _EnemyLastStand;
+	private ActionNode _FireMissile;
+	private SelectorNode _EnemyDefend;
+	private SequenceNode _EnemyCover;
+	private ActionNode _MoveToCover;
+	private SequenceNode _EnemyAttack;
+	private ActionNode _FireWeapon;
 
     private void Start()
     {
+		InitializeBehaviorTree();
         turret = transform.GetChild(0).transform;
         bulletSpawnPoint = turret.GetChild(0).transform;
     }
+	
+	private void InitializeBehaviorTree()
+	{
+		
+		_MoveToLocation = new ActionNode(EPatrol);
+		_FireMissile = new ActionNode(ELastStand);
+		_MoveToCover = new ActionNode(ECover);
+		_FireWeapon = new ActionNode(EShoot);
+		
+		List<Node> PatrolActions = new() { _MoveToLocation };
+		_EnemyPatrol = new SequenceNode(PatrolActions);
+		List<Node> LastStandActions = new() { _FireMissile };
+		_EnemyLastStand = new SequenceNode(LastStandActions);
+		List<Node> CoverActions = new() { _MoveToCover };
+		_EnemyCover = new SequenceNode(CoverActions);
+		List<Node> AttackActions = new() { _FireWeapon };
+		_EnemyAttack = new SequenceNode(AttackActions);
+		
+		
+		//Move -> Defend, Last Stand, or Patrol
+		List<Node> MoveSelector = new(){ _EnemyPatrol, _EnemyDefend, _EnemyLastStand };
+		_EnemyMove = new SelectorNode(MoveSelector);
+		//Defend -> Cover or Shoot Enemy
+		List<Node> DefendSelector = new(){ _EnemyCover, _EnemyAttack };
+		_EnemyDefend = new SelectorNode(MoveSelector);
+		//Root -> Move
+		List<Node> bTree = new(){ _EnemyMove };
+		_IdleRoot = new SequenceNode(bTree);
+		
+	}
+	
+	//To do: Implement the node states based on the behavior tree implemented above via the InitializeBehaviorTree() function.
+	private NodeState EPatrol()
+	{
+		return NodeState.FAILURE;
+	}
+	
+	private NodeState ELastStand()
+	{
+		return NodeState.FAILURE;
+	}
+	
+	private NodeState ECover()
+	{
+		return NodeState.FAILURE;
+	}
+	
+	private NodeState EShoot()
+	{
+		return NodeState.FAILURE;
+	}
 
     private void Update()
     {
+		_IdleRoot.Evaluate();
         DetectTarget();
 
         if (targetDetected)
