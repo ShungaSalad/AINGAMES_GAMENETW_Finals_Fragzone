@@ -243,6 +243,7 @@ Transform:
   - {fileID: 7338062898218955400}
   - {fileID: 2318265675357703418}
   - {fileID: 7711826210085420712}
+  - {fileID: 1235707496753357590}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &5255082629677004636
@@ -294,6 +295,7 @@ MonoBehaviour:
   MaxStam: 100
   currentWeapon: {fileID: 2285037778392002794}
   hpman: {fileID: 5529683481713474649}
+  playerUI: {fileID: 4238676875249744566}
 --- !u!54 &4975796359511201863
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -590,3 +592,80 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1125091951296789751, guid: 588b6c3165afea449a2b0f2b89a4e1e3, type: 3}
   m_PrefabInstance: {fileID: 7248763773379543647}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8907497861455638702
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5477656362279273014}
+    m_Modifications:
+    - target: {fileID: 6878654134493111163, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_Name
+      value: PlayerUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7083632770677573278, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.09999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.050000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+--- !u!4 &1235707496753357590 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7690977697917834168, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+  m_PrefabInstance: {fileID: 8907497861455638702}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4238676875249744566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4705984763309132312, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+  m_PrefabInstance: {fileID: 8907497861455638702}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d24e7d1b20c11f447a4d0b0bc6acb99e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

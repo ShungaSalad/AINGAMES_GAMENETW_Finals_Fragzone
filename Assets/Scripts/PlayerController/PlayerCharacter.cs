@@ -46,12 +46,19 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
     float TimeBeforeRecover;
     bool RecoveringStamina;
 
+    public float CurrentHP => CurrHP;
+    public float CurrentStam => CurrStam;
+    public float MaximumHP => MaxHP;
+    public float MaximumStam => MaxStam;
+
+
     [SerializeField]
     private Weapon currentWeapon;
     Rigidbody body;
     private Gun _currentGun;
     public Gun CurrentGun => _currentGun;
     public HealthManager hpman;
+    public PlayerUIManager playerUI;
 
     [Header("Network sync variables")]
     private Vector3 NetworkPosition;
@@ -86,6 +93,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         TempHP = BaseHP;
         TempStamina = BaseStamina;
         _currentGun = Gun.None;
+        
     }
 
     void RefreshStats()
@@ -194,6 +202,9 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         NetMaximumHP = MaxHP;
         NetCurrentST = CurrStam;
         NetMaximumST = MaxStam;
+        //Instantiate(playerUI, this.transform);
+        playerUI.SetStatus(MaximumStam, CurrentStam, MaximumHP, CurrentHP);
+        Debug.Log("Done");
     }
 
     // Update is called once per frame
@@ -224,6 +235,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
                     }
                 }
                 ControlCharacter();
+                playerUI.UpdateCurrentStaminaUI(CurrentStam);
             }
             else
             {
@@ -260,10 +272,10 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
-            stream.SendNext(CurrHP);
-            stream.SendNext(CurrStam);
-            stream.SendNext(MaxHP);
-            stream.SendNext(MaxStam);
+            stream.SendNext(CurrentHP);
+            stream.SendNext(CurrentStam);
+            stream.SendNext(MaximumHP);
+            stream.SendNext(MaximumStam);
         }
         else // Remote player -> receive data
         {
