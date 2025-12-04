@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 1907421950211829362}
   - component: {fileID: 4975796359511201863}
   - component: {fileID: 5606794356765894967}
+  - component: {fileID: -5983357783740748622}
   - component: {fileID: 1257053039382557856}
   m_Layer: 0
   m_Name: Player
@@ -348,6 +349,22 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-5983357783740748622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7525951409981426350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae33302aca701e34d8eab03838cc2d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 100
+  currentHP: 50
+  maxStamina: 100
+  currentStamina: 50
 --- !u!114 &1257053039382557856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,6 +624,10 @@ PrefabInstance:
     - target: {fileID: 6878654134493111163, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
       propertyPath: m_Name
       value: PlayerUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6878654134493111163, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7083632770677573278, guid: 02f7fcb5e30c3a44e8e3e8fb34aa63ae, type: 3}
       propertyPath: m_SizeDelta.x

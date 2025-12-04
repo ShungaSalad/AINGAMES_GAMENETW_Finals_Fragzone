@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 5477656362279273014}
   - component: {fileID: 5255082629677004636}
   - component: {fileID: 1907421950211829362}
+  - component: {fileID: 3829388002606466383}
   - component: {fileID: 4975796359511201863}
   - component: {fileID: 5606794356765894967}
   m_Layer: 0
@@ -301,6 +302,23 @@ MonoBehaviour:
   MaxStam: 100
   currentWeapon: {fileID: 0}
   hpman: {fileID: 0}
+  playerUI: {fileID: 0}
+--- !u!114 &3829388002606466383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7525951409981426350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae33302aca701e34d8eab03838cc2d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 100
+  currentHP: 100
+  maxStamina: 100
+  currentStamina: 50
 --- !u!54 &4975796359511201863
 Rigidbody:
   m_ObjectHideFlags: 0

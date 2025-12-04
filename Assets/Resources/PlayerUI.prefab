@@ -339,6 +339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7690977697917834168}
   - component: {fileID: 4705984763309132312}
+  - component: {fileID: 2059563044681668163}
   m_Layer: 0
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -376,8 +377,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Width: 500
   Height: 50
+  maximumHP: 0
+  currentHP: 0
+  maximumStamina: 0
+  currentStamina: 0
   healthBar: {fileID: 8908763049791247439}
   staminaBar: {fileID: 7083632770677573278}
+--- !u!114 &2059563044681668163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6878654134493111163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8351837774002313422
 GameObject:
   m_ObjectHideFlags: 0

@@ -159,6 +159,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
             {
                 CurrStam = 0;
             }
+            //playerUI.UpdateCurrentStaminaUI(CurrStam);
         }
         if (CurrStam <= MaxStam && !IsRunning)
         {
@@ -167,6 +168,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
             {
                 CurrStam = MaxStam; //this will prevent the stamina from geting a higher value
             }
+            //playerUI.UpdateCurrentStaminaUI(CurrStam);
         }
 
         // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
