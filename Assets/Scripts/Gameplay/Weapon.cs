@@ -23,8 +23,7 @@ public class Weapon : MonoBehaviour
 
     public void OnShoot()
     {
-       
         //spawn a bullet
-        Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        GameObject projectile=Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
     }
 }

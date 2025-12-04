@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
@@ -29,7 +29,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private float waypointTolerance = 1f;
 
     [Header("Detection Settings")]
-    [SerializeField] private float detectionRange = 15f;
+    //[SerializeField] private float detectionRange = 15f;
+    [SerializeField] public float detectionRange = 15f;
     [SerializeField] private float enemyCloseProximity = 1f;
     private bool targetDetected = false;
 	
@@ -91,12 +92,17 @@ public class EnemyBehavior : MonoBehaviour
 	//To do: Implement the node states based on the behavior tree implemented above via the InitializeBehaviorTree() function.
 	private NodeState EPatrol()
 	{
-        if (Vector3.Distance(target.transform.position, transform.position) <= detectionRange)
+        if (target == null) { Debug.LogError("Please reference target player."); return NodeState.FAILURE; }
+
+        else
         {
-            Patrol();
-            return NodeState.SUCCESS;
+            if (Vector3.Distance(target.transform.position, transform.position) <= detectionRange)
+            {
+                Patrol();
+                return NodeState.SUCCESS;
+            }
+            else { return NodeState.FAILURE; }
         }
-		return NodeState.FAILURE;
 	}
 	
 	private NodeState ELastStand()
@@ -109,38 +115,44 @@ public class EnemyBehavior : MonoBehaviour
             //Add Function to Drop Weapon with a boolean that describes it is a bomb
             return NodeState.SUCCESS;
         }
-
-		return NodeState.FAILURE;
-	}
+        else { return NodeState.FAILURE; }
+    }
 	
 	private NodeState ECover()
 	{
-        if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
+        if (target == null) { Debug.LogError("Please reference target player."); return NodeState.FAILURE; }
+        else
         {
-            if (IsNotOptimalCover())
+            if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
             {
-                MoveToTarget(optimalPos);
+                if (IsNotOptimalCover())
+                {
+                    MoveToTarget(optimalPos);
+                }
+                return NodeState.SUCCESS;
             }
-            return NodeState.SUCCESS;
+            else { return NodeState.FAILURE; }
         }
-
-		return NodeState.FAILURE;
 	}
 	
 	private NodeState EShoot()
 	{
-        if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange*(firingRangePercent/100)))
+        if (target == null) { Debug.LogError("Please reference target player."); return NodeState.FAILURE; }
+        else
         {
-            UpdateWeapon();
-            return NodeState.SUCCESS;
+            if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange * (firingRangePercent / 100)))
+            {
+                UpdateWeapon();
+                return NodeState.SUCCESS;
+            }
+            else { return NodeState.FAILURE; }
         }
-
-        return NodeState.FAILURE;
 	}
 
     private void Update()
     {
-		_IdleRoot.Evaluate();
+        //Behavior Tree has issues with _IdleRoot.Evaluate() that causes errors. Please help troubleshoot!
+		//_IdleRoot.Evaluate();
         DetectTarget();
 
         if (targetDetected)
@@ -198,6 +210,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void UpdateControl()
     {
+        if (target == null) return;
         targetPos = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
         float distance = Vector3.Distance(transform.position, target.transform.position);
         if (targetDetected == false)
@@ -227,7 +240,7 @@ public class EnemyBehavior : MonoBehaviour
         if (Time.time >= elapsedTime && distance < detectionRange * firingRangePercent/100) //Shoot only when static
         {
             elapsedTime = Time.time + shootDelay;
-            Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            GameObject projectile = Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         }
     }
 

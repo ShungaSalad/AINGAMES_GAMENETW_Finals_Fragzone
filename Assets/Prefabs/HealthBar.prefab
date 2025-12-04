@@ -120,6 +120,7 @@ MonoBehaviour:
   explosionSpread: 3
   explosionCount: 5
   healthBar: {fileID: 1868748730840718778}
+  isDead: 0
 --- !u!1 &879694763613306097
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +180,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337340888921450995}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -188,8 +189,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: -0.66999817, y: 0}
+  m_SizeDelta: {x: -11.34, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4747488926912989944
 GameObject:
@@ -351,7 +352,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8559822085039991343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,10 +383,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  deathEffect: {fileID: 0}
+  deathEffect: {fileID: 1374926205213904, guid: 54ae521f76c39324f960d40a095e265b, type: 3}
   explosionSpread: 3
   explosionCount: 5
   healthBar: {fileID: 1868748730840718778}
+  isDead: 0
 --- !u!1 &5831673730696632118
 GameObject:
   m_ObjectHideFlags: 0

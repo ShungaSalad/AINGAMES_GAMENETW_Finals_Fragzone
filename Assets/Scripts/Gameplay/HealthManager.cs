@@ -4,8 +4,8 @@ using UnityEngine.UI;
 public class HealthManager : MonoBehaviour
 {
     [SerializeField]
-    private int maxHealth = 100;
-    private int currentHealth;
+    public float maxHealth = 100;
+    private float currentHealth;
 
     [SerializeField]
     private GameObject deathEffect; // Explosion prefab to spawn on death
@@ -18,7 +18,7 @@ public class HealthManager : MonoBehaviour
     [Header("Health Bar Settings")]
     [SerializeField] public Slider healthBar;
 
-    private bool isDead = false;
+    public bool isDead = false;
     
     private void Start()
     {

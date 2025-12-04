@@ -3,6 +3,7 @@ using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerController
@@ -213,6 +214,14 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         MultiplayerUpdate();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            hpman.TakeDamage(10);
+        }
+    }
+
     private void MultiplayerUpdate()
     {
         if (photonView.IsMine) //for the local player
@@ -242,7 +251,6 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
-            hpman.healthBar.value = TempHP;
             UpdateAttack();
         }
         else //for the remote players
@@ -253,7 +261,6 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
             TempHP = NetCurrentHP;
             BaseStamina = NetMaximumST;
             TempStamina = NetCurrentST;
-            hpman.healthBar.value = TempHP;
         }
     }
 

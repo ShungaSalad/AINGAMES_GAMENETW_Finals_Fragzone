@@ -282,10 +282,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LookSPD: 3
-  WalkSPD: 20
-  RunSPD: 50
-  JForce: 25
-  Grav: 70
+  WalkSPD: 50
+  RunSPD: 120
+  JForce: 40
+  Grav: 100
   Cam: {fileID: 3730988860933108700}
   Moveable: 1
   Living: 1
@@ -571,6 +571,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar
       objectReference: {fileID: 0}
+    - target: {fileID: 5399049484911582457, guid: 588b6c3165afea449a2b0f2b89a4e1e3, type: 3}
+      propertyPath: deathEffect
+      value: 
+      objectReference: {fileID: 1374926205213904, guid: 54ae521f76c39324f960d40a095e265b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
