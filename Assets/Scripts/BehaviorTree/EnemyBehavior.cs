@@ -29,6 +29,7 @@ public class EnemyBehavior : MonoBehaviour
 
     [Header("Detection Settings")]
     [SerializeField] private float detectionRange = 15f;
+    [SerializeField] private float enemyCloseProximity = 1f;
     private bool targetDetected = false;
 	
 	[Header("Behavior Nodes")]
@@ -44,8 +45,11 @@ public class EnemyBehavior : MonoBehaviour
 	private SequenceNode _EnemyAttack;
 	private ActionNode _FireWeapon;
 
+    private bool isAlive;
+
     private void Start()
     {
+        isAlive = true;
 		InitializeBehaviorTree();
         turret = transform.GetChild(0).transform;
         bulletSpawnPoint = turret.GetChild(0).transform;
@@ -84,22 +88,44 @@ public class EnemyBehavior : MonoBehaviour
 	//To do: Implement the node states based on the behavior tree implemented above via the InitializeBehaviorTree() function.
 	private NodeState EPatrol()
 	{
+        if (Vector3.Distance(targetPos, transform.position) <= detectionRange)
+        {
+            return NodeState.SUCCESS;
+        }
 		return NodeState.FAILURE;
 	}
 	
 	private NodeState ELastStand()
 	{
+        Random.InitState((int)System.DateTime.Now.Ticks);
+        int randomNumber = Random.Range(0, 100);
+
+        if (isAlive == false && randomNumber <= 20)
+        {
+            return NodeState.SUCCESS;
+        }
+
 		return NodeState.FAILURE;
 	}
 	
 	private NodeState ECover()
 	{
+        if (Vector3.Distance(targetPos, transform.position) <= enemyCloseProximity)
+        {
+            return NodeState.SUCCESS;
+        }
+
 		return NodeState.FAILURE;
 	}
 	
 	private NodeState EShoot()
 	{
-		return NodeState.FAILURE;
+        if (Vector3.Distance(targetPos, transform.position) <= (detectionRange*(firingRangePercent/100)))
+        {
+            return NodeState.SUCCESS;
+        }
+
+        return NodeState.FAILURE;
 	}
 
     private void Update()
@@ -201,4 +227,5 @@ public class EnemyBehavior : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, detectionRange * firingRangePercent/100);
     }
+
 }
