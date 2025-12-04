@@ -88,7 +88,7 @@ public class EnemyBehavior : MonoBehaviour
 	//To do: Implement the node states based on the behavior tree implemented above via the InitializeBehaviorTree() function.
 	private NodeState EPatrol()
 	{
-        if (Vector3.Distance(targetPos, transform.position) <= detectionRange)
+        if (Vector3.Distance(target.transform.position, transform.position) <= detectionRange)
         {
             return NodeState.SUCCESS;
         }
@@ -110,7 +110,7 @@ public class EnemyBehavior : MonoBehaviour
 	
 	private NodeState ECover()
 	{
-        if (Vector3.Distance(targetPos, transform.position) <= enemyCloseProximity)
+        if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
         {
             return NodeState.SUCCESS;
         }
@@ -120,7 +120,7 @@ public class EnemyBehavior : MonoBehaviour
 	
 	private NodeState EShoot()
 	{
-        if (Vector3.Distance(targetPos, transform.position) <= (detectionRange*(firingRangePercent/100)))
+        if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange*(firingRangePercent/100)))
         {
             return NodeState.SUCCESS;
         }
@@ -226,6 +226,14 @@ public class EnemyBehavior : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectionRange);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, detectionRange * firingRangePercent/100);
+    }
+
+    private void CheckOptimalCover()
+    {
+        while(Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
+        {
+
+        }
     }
 
 }
