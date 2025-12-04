@@ -11,6 +11,7 @@ public class EnemyBehavior : MonoBehaviour
     private Transform bulletSpawnPoint;
     private float turretRotSpeed = 10.0f;
     private Vector3 targetPos;
+    private Transform optimalPos;
 
     [SerializeField]
     private GameObject target; 
@@ -46,6 +47,8 @@ public class EnemyBehavior : MonoBehaviour
 	private ActionNode _FireWeapon;
 
     private bool isAlive;
+    private float moveSpeed;
+    private float rotateSpeed;
 
     private void Start()
     {
@@ -175,9 +178,10 @@ public class EnemyBehavior : MonoBehaviour
         Transform patrolTarget = patrolPoints[currentPatrolIndex];
         Vector3 direction = (patrolTarget.position - transform.position).normalized;
 
-        transform.position = Vector3.MoveTowards(transform.position, patrolTarget.position, patrolSpeed * Time.deltaTime);
-        Quaternion targetRot = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 2f);
+        MoveToTarget(patrolTarget);
+       // transform.position = Vector3.MoveTowards(transform.position, patrolTarget.position, patrolSpeed * Time.deltaTime);
+       //Quaternion targetRot = Quaternion.LookRotation(direction);
+       //.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 2f);
 
         if (Vector3.Distance(transform.position, patrolTarget.position) < waypointTolerance)
         {
@@ -228,12 +232,30 @@ public class EnemyBehavior : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectionRange * firingRangePercent/100);
     }
 
-    private void CheckOptimalCover()
+    private bool IsOptimalCover()
     {
-        while(Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
+        int index = 0;
+        while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
         {
-
+            optimalPos = patrolPoints[index];
+            index++;
         }
+        if(transform.position == optimalPos.position)
+        {
+            return true;
+        }
+        return false;
     }
 
+    public void MoveToTarget(Transform currentTarget)
+    {
+        // Enemy will move to the target waypoint
+        Vector3 targetDirection = currentTarget.position - transform.position;
+        // Get the rotation that faces the targetDirection
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+        // Do the actual rotation by making the enemy look towards the targetRotation
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotateSpeed);
+        // Since it's already rotated, just make it move forward
+        transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+    }
 }
