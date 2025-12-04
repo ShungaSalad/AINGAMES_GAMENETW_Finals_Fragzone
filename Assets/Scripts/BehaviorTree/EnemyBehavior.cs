@@ -93,6 +93,7 @@ public class EnemyBehavior : MonoBehaviour
 	{
         if (Vector3.Distance(target.transform.position, transform.position) <= detectionRange)
         {
+            Patrol();
             return NodeState.SUCCESS;
         }
 		return NodeState.FAILURE;
@@ -105,6 +106,7 @@ public class EnemyBehavior : MonoBehaviour
 
         if (isAlive == false && randomNumber <= 20)
         {
+            //Add Function to Drop Weapon with a boolean that describes it is a bomb
             return NodeState.SUCCESS;
         }
 
@@ -115,6 +117,10 @@ public class EnemyBehavior : MonoBehaviour
 	{
         if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
         {
+            if (IsNotOptimalCover())
+            {
+                MoveToTarget(optimalPos);
+            }
             return NodeState.SUCCESS;
         }
 
@@ -125,6 +131,7 @@ public class EnemyBehavior : MonoBehaviour
 	{
         if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange*(firingRangePercent/100)))
         {
+            UpdateWeapon();
             return NodeState.SUCCESS;
         }
 
@@ -232,7 +239,7 @@ public class EnemyBehavior : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectionRange * firingRangePercent/100);
     }
 
-    private bool IsOptimalCover()
+    private bool IsNotOptimalCover()
     {
         int index = 0;
         while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
@@ -240,7 +247,7 @@ public class EnemyBehavior : MonoBehaviour
             optimalPos = patrolPoints[index];
             index++;
         }
-        if(transform.position == optimalPos.position)
+        if(Vector3.Distance(transform.position, optimalPos.position) > waypointTolerance)
         {
             return true;
         }
