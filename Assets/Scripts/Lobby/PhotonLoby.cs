@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using Photon.Pun;
+﻿using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PhotonLoby : MonoBehaviourPunCallbacks
 {
@@ -33,9 +33,11 @@ public class PhotonLoby : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        int userNum = Random.Range(1, 9999);
+        PhotonNetwork.LocalPlayer.NickName = "Player"+userNum;
         lobby = this;
         PhotonNetwork.AutomaticallySyncScene = true;
-        sysmsg.text = "Welcome to FragZone!";
+        sysmsg.text = "Hello, "+PhotonNetwork.LocalPlayer.NickName+" , welcome to FragZone!";
     }
 
     private void Start()

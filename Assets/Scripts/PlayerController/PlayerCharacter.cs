@@ -116,6 +116,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         TempStamina = CurrStam;
         playStats.currentHP = TempHP;
         playStats.currentStamina = TempStamina;
+        playerUI.UpdateRoomInfo("Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount + " | You are: " + PhotonNetwork.LocalPlayer.NickName);
     }
 
     void ControlCharacter()
@@ -212,6 +213,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         NetMaximumST = MaxStam;
         //Instantiate(playerUI, this.transform);
         playerUI.SetStatus(MaximumStam, CurrentStam, MaximumHP, CurrentHP);
+        playerUI.UpdateRoomInfo("Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount + " | You are: " + PhotonNetwork.LocalPlayer.NickName);
         Debug.Log("Done");
     }
 

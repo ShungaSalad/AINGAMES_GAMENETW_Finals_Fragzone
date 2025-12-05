@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Photon.Pun;
 
 public class PlayerUIManager : MonoBehaviourPun
@@ -12,8 +13,10 @@ public class PlayerUIManager : MonoBehaviourPun
     private RectTransform healthBar;
     [SerializeField]
     private RectTransform staminaBar;
+    [SerializeField]
+    private TMP_Text roomInfo;
 
-  
+
     private void SetHP()
     {
         float newWidth = (currentHP / maximumHP) * Width;
@@ -63,4 +66,8 @@ public class PlayerUIManager : MonoBehaviourPun
         SetStamina();
     }
     
+    public void UpdateRoomInfo(string txt)
+    {
+        roomInfo.text = txt;
+    }
 }
