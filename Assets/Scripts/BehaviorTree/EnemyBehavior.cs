@@ -75,14 +75,14 @@ public class EnemyBehavior : MonoBehaviour
 		_EnemyCover = new SequenceNode(CoverActions);
 		List<Node> AttackActions = new() { _FireWeapon };
 		_EnemyAttack = new SequenceNode(AttackActions);
-		
-		
-		//Move -> Defend, Last Stand, or Patrol
-		List<Node> MoveSelector = new(){ _EnemyPatrol, _EnemyDefend, _EnemyLastStand };
+
+
+        //Defend -> Cover or Shoot Enemy
+        List<Node> DefendSelector = new() { _EnemyCover, _EnemyAttack };
+        _EnemyDefend = new SelectorNode(DefendSelector);
+        //Move -> Defend, Last Stand, or Patrol
+        List<Node> MoveSelector = new(){ _EnemyPatrol, _EnemyDefend, _EnemyLastStand };
 		_EnemyMove = new SelectorNode(MoveSelector);
-		//Defend -> Cover or Shoot Enemy
-		List<Node> DefendSelector = new(){ _EnemyCover, _EnemyAttack };
-		_EnemyDefend = new SelectorNode(MoveSelector);
 		//Root -> Move
 		List<Node> bTree = new(){ _EnemyMove };
 		_IdleRoot = new SequenceNode(bTree);
@@ -92,17 +92,17 @@ public class EnemyBehavior : MonoBehaviour
 	//To do: Implement the node states based on the behavior tree implemented above via the InitializeBehaviorTree() function.
 	private NodeState EPatrol()
 	{
-        if (target == null) { Debug.LogError("Please reference target player."); return NodeState.FAILURE; }
-
-        else
+        if (target == null)
         {
-            if (Vector3.Distance(target.transform.position, transform.position) <= detectionRange)
-            {
-                Patrol();
-                return NodeState.SUCCESS;
-            }
-            else { return NodeState.FAILURE; }
+            //Activate after implementing waypoints
+            //Patrol();
+            DetectTarget();
+            Debug.Log("Patrolling");
+            return NodeState.SUCCESS;
         }
+         Debug.Log("Patrolling Failed");
+            return NodeState.FAILURE;
+        
 	}
 	
 	private NodeState ELastStand()
@@ -113,9 +113,12 @@ public class EnemyBehavior : MonoBehaviour
         if (isAlive == false && randomNumber <= 20)
         {
             //Add Function to Drop Weapon with a boolean that describes it is a bomb
+            Debug.Log("BOOM");
             return NodeState.SUCCESS;
         }
-        else { return NodeState.FAILURE; }
+
+        Debug.Log("Not Boom");
+        return NodeState.FAILURE;
     }
 	
 	private NodeState ECover()
@@ -123,15 +126,24 @@ public class EnemyBehavior : MonoBehaviour
         if (target == null) { Debug.LogError("Please reference target player."); return NodeState.FAILURE; }
         else
         {
-            if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
+            //Uncomment after implementing waypoints
+            /*
+            if (IsNotOptimalCover())
             {
-                if (IsNotOptimalCover())
-                {
-                    MoveToTarget(optimalPos);
-                }
+                MoveToTarget(optimalPos);
+                Debug.Log("Take Cover");
                 return NodeState.SUCCESS;
             }
-            else { return NodeState.FAILURE; }
+            */
+
+            if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
+            {
+                //MoveToTarget(optimalPos);
+                Debug.Log("Take Cover");
+                return NodeState.SUCCESS;
+            }
+            Debug.Log("Take Cover Failed");
+            return NodeState.FAILURE;
         }
 	}
 	
@@ -143,9 +155,12 @@ public class EnemyBehavior : MonoBehaviour
             if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange * (firingRangePercent / 100)))
             {
                 UpdateWeapon();
+                Debug.Log("Shoot");
                 return NodeState.SUCCESS;
             }
-            else { return NodeState.FAILURE; }
+
+            Debug.Log("Don't Shoot");
+            return NodeState.FAILURE;
         }
 	}
 
@@ -153,8 +168,9 @@ public class EnemyBehavior : MonoBehaviour
     {
         //Behavior Tree has issues with _IdleRoot.Evaluate() that causes errors. Please help troubleshoot!
 		_IdleRoot.Evaluate();
-        DetectTarget();
 
+        //DetectTarget();
+        /*
         if (targetDetected)
         {
             UpdateControl();
@@ -164,17 +180,32 @@ public class EnemyBehavior : MonoBehaviour
         {
             Patrol();
         }
+        */
     }
 
     private void DetectTarget()
     {
-        if (target == null) return;
+        RaycastHit hit;
 
+        if (Physics.Raycast(transform.position, transform.forward, out hit, detectionRange))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                targetDetected = true;
+                target = hit.collider.gameObject;
+                Debug.Log("You are Detected");
+                return;
+
+            }
+
+        }
+
+        /*
         float distance = Vector3.Distance(transform.position, target.transform.position);
 
         if (distance <= detectionRange)
         {
-            RaycastHit hit;
+            
             Vector3 dir = (target.transform.position - transform.position).normalized;
 
             if (Physics.Raycast(transform.position + Vector3.up, dir, out hit, detectionRange))
@@ -186,8 +217,10 @@ public class EnemyBehavior : MonoBehaviour
                 }
             }
         }
+        */
+        targetDetected = true;
+        target = null;
 
-        targetDetected = false;
     }
 
     private void Patrol()

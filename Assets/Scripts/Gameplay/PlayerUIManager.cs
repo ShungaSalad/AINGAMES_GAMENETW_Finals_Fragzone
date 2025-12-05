@@ -37,15 +37,17 @@ public class PlayerUIManager : MonoBehaviourPun
         SetHP();
     }
 
+    [PunRPC]
     public void UpdateCurrentStaminaUI(float setCurrentStamina)
     {
         //Sets Current Stamina in User Interface
         currentStamina = setCurrentStamina;
         SetStamina();
-        Debug.Log("Stamina Updated");
+        //Debug.Log("Stamina Updated");
     }
 
-    public void SetStatus(float maximumStam, float currentStam, float maximumHealth, float currentHealth)
+    [PunRPC]
+    public void SetStatusUI(float maximumStam, float currentStam, float maximumHealth, float currentHealth)
     {
         maximumHP = maximumHealth;
         currentHP = currentHealth;
@@ -56,7 +58,8 @@ public class PlayerUIManager : MonoBehaviourPun
         SetStamina();
     }
 
-    public void SetStatus(CharacterStats stats)
+    [PunRPC]
+    public void SetStatusUI(CharacterStats stats)
     {
         maximumHP = stats.maxHP;
         currentHP = stats.currentHP;
@@ -65,7 +68,8 @@ public class PlayerUIManager : MonoBehaviourPun
         SetHP();
         SetStamina();
     }
-    
+
+    [PunRPC]
     public void UpdateRoomInfo(string txt)
     {
         roomInfo.text = txt;

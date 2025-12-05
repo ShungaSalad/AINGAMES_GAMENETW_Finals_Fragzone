@@ -9,6 +9,14 @@ public class CharacterStats : MonoBehaviourPun
     public float maxStamina = 100f;
     public float currentStamina = 50f;
 
+    /*
+    private void Awake()
+    {
+        if (!photonView.IsMine) return;
+
+        photonView.RPC("SetStatusUI", RpcTarget.AllBuffered, maxStamina, currentStamina, maxHP, currentHP);
+    }
+    */
 
     [PunRPC]
     public void TakeDamage(float amount)
@@ -21,10 +29,12 @@ public class CharacterStats : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
     public void ChangeStamina(float amount)
     { 
-        currentStamina = Mathf.Clamp(currentStamina += amount, 0, maxStamina);
+        currentStamina = Mathf.Clamp(currentStamina = amount, 0, maxStamina);
 
+       // photonView.RPC("UpdateCurrentStaminaUI", RpcTarget.AllBuffered, currentStamina);
     }
 
     void Die()

@@ -60,7 +60,6 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
     public Gun CurrentGun => _currentGun;
     public HealthManager hpman;
     public PlayerUIManager playerUI;
-
     private CharacterStats playStats;
 
     [Header("Network sync variables")]
@@ -116,6 +115,8 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         TempStamina = CurrStam;
         playStats.currentHP = TempHP;
         playStats.currentStamina = TempStamina;
+        playerUI.UpdateCurrentStaminaUI(CurrentStam);
+        playerUI.UpdateCurrentHPUI(CurrentHP);
         playerUI.UpdateRoomInfo("Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount + " | You are: " + PhotonNetwork.LocalPlayer.NickName);
     }
 
@@ -212,7 +213,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         NetCurrentST = CurrStam;
         NetMaximumST = MaxStam;
         //Instantiate(playerUI, this.transform);
-        playerUI.SetStatus(MaximumStam, CurrentStam, MaximumHP, CurrentHP);
+        playerUI.SetStatusUI(MaximumStam, CurrentStam, MaximumHP, CurrentHP);
         playerUI.UpdateRoomInfo("Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount + " | You are: " + PhotonNetwork.LocalPlayer.NickName);
         Debug.Log("Done");
     }
@@ -253,7 +254,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
                     }
                 }
                 ControlCharacter();
-                playerUI.UpdateCurrentStaminaUI(CurrentStam);
+                
             }
             else
             {

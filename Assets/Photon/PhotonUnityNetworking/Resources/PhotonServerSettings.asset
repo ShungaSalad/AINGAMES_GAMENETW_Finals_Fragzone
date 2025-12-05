@@ -41,6 +41,11 @@ MonoBehaviour:
   - RespawnSpaceship
   - TakeDamage
   - UpdateCurrentHPUI
+  - SetStatus
+  - UpdateCurrentStaminaUI
+  - SetStatusUI
+  - UpdateRoomInfo
+  - ChangeStamina
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
