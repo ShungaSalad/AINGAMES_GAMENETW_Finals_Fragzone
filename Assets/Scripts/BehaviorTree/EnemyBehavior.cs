@@ -152,7 +152,7 @@ public class EnemyBehavior : MonoBehaviour
     private void Update()
     {
         //Behavior Tree has issues with _IdleRoot.Evaluate() that causes errors. Please help troubleshoot!
-		//_IdleRoot.Evaluate();
+		_IdleRoot.Evaluate();
         DetectTarget();
 
         if (targetDetected)

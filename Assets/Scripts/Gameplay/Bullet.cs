@@ -26,9 +26,11 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        // Make the object always move forward
-        transform.position +=
-            transform.forward * speed * Time.deltaTime;
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 100f))
+        {
+            transform.position = Vector3.MoveTowards(transform.position, hit.point, speed * Time.deltaTime);
+        }
+        else { transform.position += transform.forward * speed * Time.deltaTime; }
     }
 
 

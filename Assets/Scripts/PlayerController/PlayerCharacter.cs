@@ -61,6 +61,8 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
     public HealthManager hpman;
     public PlayerUIManager playerUI;
 
+    private CharacterStats playStats;
+
     [Header("Network sync variables")]
     private Vector3 NetworkPosition;
     private Quaternion NetworkRotation;
@@ -68,7 +70,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
 
     void Awake()
     {
-        
+        playStats = GetComponent<CharacterStats>();
         //Setting Inherited Variables - Base Values 
         WalkingSpeed = WalkSPD;
         RunningSpeed = RunSPD;
@@ -94,7 +96,8 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         TempHP = BaseHP;
         TempStamina = BaseStamina;
         _currentGun = Gun.None;
-        
+        playStats.currentHP = TempHP;
+        playStats.currentStamina = TempStamina;
     }
 
     void RefreshStats()
@@ -111,6 +114,8 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         TempHP = CurrHP;
         BaseStamina = MaxStam;
         TempStamina = CurrStam;
+        playStats.currentHP = TempHP;
+        playStats.currentStamina = TempStamina;
     }
 
     void ControlCharacter()
