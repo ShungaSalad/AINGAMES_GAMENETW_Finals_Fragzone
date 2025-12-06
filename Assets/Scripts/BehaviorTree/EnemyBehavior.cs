@@ -313,20 +313,56 @@ public class EnemyBehavior : MonoBehaviour
 
     private bool IsNotOptimalCover()
     {
+        if (patrolPoints == null || patrolPoints.Count == 0)
+        {
+            
+            return false;
+        }
+
         int index = 0;
-        //NullReferenceException is caused here.
+
+        
+        optimalPos = patrolPoints[index];
+
         while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
         {
             
-            optimalPos = patrolPoints[index];
             index++;
+            if (index >= patrolPoints.Count)
+            {
+                
+                break;
+            }
+
+            
+            optimalPos = patrolPoints[index];
         }
-        if(Vector3.Distance(transform.position, optimalPos.position) > waypointTolerance)
+
+        
+        if (optimalPos != null && Vector3.Distance(transform.position, optimalPos.position) > waypointTolerance)
         {
             return true;
         }
         return false;
     }
+
+    // Lines that are causing errors
+    /*
+    int index = 0;
+    //NullReferenceException is caused here.
+    while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
+    {
+
+        optimalPos = patrolPoints[index];
+        index++;
+    }
+    if(Vector3.Distance(transform.position, optimalPos.position) > waypointTolerance)
+    {
+        return true;
+    }
+    return false;
+}
+    */
 
     public void MoveToTarget(Transform currentTarget)
     {
