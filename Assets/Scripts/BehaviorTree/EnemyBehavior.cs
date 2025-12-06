@@ -141,18 +141,31 @@ public class EnemyBehavior : MonoBehaviour
         {
             if (WaypointsEnabled)
             {
+                if (IsTargetOutOfRange())
+                {
+                    target = null;
+                    targetDetected = false;
+                }
+                if (Vector3.Distance(target.transform.position, transform.position) > detectionRange)
+                {
+                    target = null;
+                    targetDetected = false;
+
+                }
                 if (IsNotOptimalCover())
                 {
                     MoveToTarget(optimalPos);
                     Debug.Log(EnemyName + ": Take Cover");
                     return NodeState.SUCCESS;
                 }
+                /*
                 if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
                 {
                     MoveToTarget(optimalPos);
                     Debug.Log(EnemyName + ": Take Cover");
                     return NodeState.SUCCESS;
                 }
+                */
                 else
                 {
                     Debug.Log(EnemyName + ": Take Cover Failed");
@@ -192,23 +205,18 @@ public class EnemyBehavior : MonoBehaviour
                 target = hit.collider.gameObject;
                 Debug.Log(EnemyName + ": You are Detected");
                 return;
-
             }
 
         }
-        else
-        {
-            targetDetected = false;
-            target = null;
-        }
-            
 
+        targetDetected = false;
+        target = null;
         /*
         float distance = Vector3.Distance(transform.position, target.transform.position);
 
         if (distance <= detectionRange)
         {
-            
+
             Vector3 dir = (target.transform.position - transform.position).normalized;
 
             if (Physics.Raycast(transform.position + Vector3.up, dir, out hit, detectionRange))
@@ -318,6 +326,15 @@ public class EnemyBehavior : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotateSpeed);
         // Since it's already rotated, just make it move forward
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+    }
+
+    private bool IsTargetOutOfRange()
+    {
+        if (Vector3.Distance(target.transform.position, transform.position) > detectionRange)
+        {
+            return true;
+        }
+        return false;
     }
 }
 
