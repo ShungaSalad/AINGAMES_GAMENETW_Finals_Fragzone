@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyBehavior : MonoBehaviour
 {
@@ -52,11 +53,23 @@ public class EnemyBehavior : MonoBehaviour
     private float moveSpeed;
     private float rotateSpeed;
 
+    //[SerializeField] private float moveSpeed = 5.0f; // Default value
+    //[SerializeField] private float rotateSpeed = 50.0f; // Default value
+
     public bool WaypointsEnabled;
 
+    private NavMeshAgent agent;
     private void Start()
     {
-        //moveSpeed = 5.0f;
+        // Get the NavMeshAgent component
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.LogError(EnemyName + ": NavMeshAgent component not found!");
+        }
+
+        moveSpeed = patrolSpeed; // uncommented this 
+        rotateSpeed = 50.0f; // added this
         isAlive = true;
 		InitializeBehaviorTree();
         turret = transform.GetChild(0).transform;
@@ -65,6 +78,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Update()
     {
+        DetectTarget();
         _IdleRoot.Evaluate();
     }
 
@@ -97,28 +111,67 @@ public class EnemyBehavior : MonoBehaviour
 		_IdleRoot = new SequenceNode(bTree);
 		
 	}
-	
+	//changed stuff in this method
 	private NodeState EPatrol()
 	{
+        // The target is now set by DetectTarget() in Update()
         if (target == null)
         {
-            //Activate Patrol() after implementing waypoints
             if (WaypointsEnabled)
             {
                 Patrol();
             }
-            DetectTarget();
-            Debug.Log(EnemyName+": Patrolling");
+
+            
+
+            Debug.Log(EnemyName + ": Patrolling");
             return NodeState.SUCCESS;
         }
         else
         {
+            
             return NodeState.FAILURE;
         }
-        
-	}
-	
-	private NodeState ELastStand()
+    }
+    /*
+    if (target == null)
+    {
+
+
+        // This is the check to see if waypoints are set up
+        if (WaypointsEnabled)
+        {
+            Patrol(); 
+        }
+
+        DetectTarget(); 
+
+        Debug.Log(EnemyName + ": Patrolling");
+        return NodeState.SUCCESS; 
+    }
+    else
+    {
+        return NodeState.FAILURE;
+    }
+}
+
+//Activate Patrol() after implementing waypoints
+if (WaypointsEnabled)
+{
+    Patrol();
+}
+DetectTarget();
+Debug.Log(EnemyName+": Patrolling");
+return NodeState.SUCCESS;
+}
+else
+{
+return NodeState.FAILURE;
+}
+
+}
+*/
+    private NodeState ELastStand()
 	{
         Random.InitState((int)System.DateTime.Now.Ticks);
         int randomNumber = Random.Range(0, 100);
@@ -181,6 +234,23 @@ public class EnemyBehavior : MonoBehaviour
         if (target == null) { Debug.LogError(EnemyName+": Please reference target player."); return NodeState.FAILURE; }
         else
         {
+
+            if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange * (firingRangePercent / 100)))
+            {
+                
+                if (agent != null && agent.isActiveAndEnabled)
+                {
+                    agent.SetDestination(transform.position); 
+                }
+
+                UpdateWeapon();
+                Debug.Log(EnemyName + ": Shoot");
+                return NodeState.SUCCESS;
+            }
+
+            Debug.Log(EnemyName + ": Don't Shoot");
+            return NodeState.FAILURE;
+            /*
             if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange * (firingRangePercent / 100)))
             {
                 UpdateWeapon();
@@ -190,13 +260,61 @@ public class EnemyBehavior : MonoBehaviour
 
             Debug.Log(EnemyName + ": Don't Shoot");
             return NodeState.FAILURE;
+            */
         }
 	}
 
     private void DetectTarget()
     {
+        
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRange);
+
+        GameObject potentialTarget = null;
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Player"))
+            {
+                
+                Vector3 directionToPlayer = (hitCollider.transform.position - transform.position).normalized;
+                RaycastHit hit;
+
+                if (Physics.Raycast(transform.position + Vector3.up, directionToPlayer, out hit, detectionRange))
+                {
+                    if (hit.collider.CompareTag("Player"))
+                    {
+                        potentialTarget = hitCollider.gameObject;
+                        break; 
+                    }
+                }
+            }
+        }
+
+        if (potentialTarget != null)
+        {
+            targetDetected = true;
+            target = potentialTarget;
+            Debug.Log(EnemyName + ": You are Detected");
+        }
+        else
+        {
+            targetDetected = false;
+            target = null;
+        }
+
+        /*
+         * 
         RaycastHit hit;
 
+        if (Physics.Raycast(transform.position, transform.forward, out hit, detectionRange))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                
+                return;
+            }
+        }
+        
         if (Physics.Raycast(transform.position, transform.forward, out hit, detectionRange))
         {
             if (hit.collider.CompareTag("Player"))
@@ -208,7 +326,7 @@ public class EnemyBehavior : MonoBehaviour
             }
 
         }
-
+        */
         targetDetected = false;
         target = null;
         /*
@@ -231,6 +349,23 @@ public class EnemyBehavior : MonoBehaviour
         */
     }
 
+
+    private void Patrol()
+    {
+        if (patrolPoints == null || patrolPoints.Count == 0) return;
+
+        Transform patrolTarget = patrolPoints[currentPatrolIndex];
+
+        // This is the key line that initiates movement and rotation
+        MoveToTarget(patrolTarget);
+
+        if (Vector3.Distance(transform.position, patrolTarget.position) < waypointTolerance)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Count;
+        }
+    }
+
+    /*
     private void Patrol()
     {
         if (patrolPoints == null || patrolPoints.Count == 0) return;
@@ -245,7 +380,7 @@ public class EnemyBehavior : MonoBehaviour
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Count;
         }
     }
-
+    */
     private void UpdateControl()
     {
         if (target == null) return;
@@ -257,12 +392,23 @@ public class EnemyBehavior : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turretRotSpeed * 0.2f);
         }
+        /*
         else if (distance >= detectionRange * firingRangePercent/100) //Chase 
         {
             Vector3 direction = (target.transform.position - transform.position).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turretRotSpeed * 0.2f);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, patrolSpeed * 1.075f * Time.deltaTime);
+        }
+        */
+
+        if (targetDetected && Vector3.Distance(transform.position, target.transform.position) >= (detectionRange * firingRangePercent / 100))
+        {
+            if (agent != null && agent.isActiveAndEnabled)
+            {
+                agent.speed = patrolSpeed * 1.075f; // Chase speed
+                agent.SetDestination(target.transform.position);
+            }
         }
     }
 
@@ -318,6 +464,14 @@ public class EnemyBehavior : MonoBehaviour
 
     public void MoveToTarget(Transform currentTarget)
     {
+        if (agent != null && agent.isActiveAndEnabled)
+        {
+            agent.speed = patrolSpeed; // Use your patrol speed
+            agent.SetDestination(currentTarget.position);
+        }
+
+        // Old manual movement code
+        /*
         // Enemy will move to the target waypoint
         Vector3 targetDirection = currentTarget.position - transform.position;
         // Get the rotation that faces the targetDirection
@@ -326,6 +480,7 @@ public class EnemyBehavior : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotateSpeed);
         // Since it's already rotated, just make it move forward
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+        */
     }
 
     private bool IsTargetOutOfRange()
