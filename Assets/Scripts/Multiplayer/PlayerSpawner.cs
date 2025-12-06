@@ -11,6 +11,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
 
     [Header("Spawn Points")]
     public Transform[] Spawner;
+    public Transform[] PosTracker;
 
     [Header("Player Settings")]
     public GameObject PlayerPrefab; // must be in Resources folder
@@ -105,7 +106,12 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-
+        PlayerCharacter[] Team = FindObjectsOfType<PlayerCharacter>();
+        for(int x=0; x<Team.Length; x++)
+        {
+            PosTracker[x].position = Team[x].transform.position;
+        }
+            
     }
 
     public override void OnDisconnected(DisconnectCause cause)

@@ -57,9 +57,39 @@ public class EnemyBehavior : MonoBehaviour
 		InitializeBehaviorTree();
         turret = transform.GetChild(0).transform;
         bulletSpawnPoint = turret.GetChild(0).transform;
+        target = FindNearestObjectWithTag("Player");
     }
-	
-	private void InitializeBehaviorTree()
+
+    GameObject FindNearestObjectWithTag(string tag)
+    {
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
+        float shortestDistance = Mathf.Infinity;
+        GameObject closestObject = null;
+
+        foreach (GameObject obj in objectsWithTag)
+        {
+            float distance = Vector3.Distance(transform.position, obj.transform.position);
+            if (distance < shortestDistance)
+            {
+                shortestDistance = distance;
+                closestObject = obj;
+            }
+        }
+        GameObject nearestObject = closestObject;
+
+        if (nearestObject != null)
+        {
+            Debug.Log("Nearest object with tag '" + tag + "' is: " + nearestObject.name);
+            return nearestObject;
+        }
+        else
+        {
+            Debug.Log("No object with tag '" + tag + "' found.");
+            return null;
+        }
+    }
+
+    private void InitializeBehaviorTree()
 	{
 		
 		_MoveToLocation = new ActionNode(EPatrol);
@@ -95,7 +125,7 @@ public class EnemyBehavior : MonoBehaviour
         if (target == null)
         {
             //Activate after implementing waypoints
-            //Patrol();
+            Patrol();
             DetectTarget();
             Debug.Log("Patrolling");
             return NodeState.SUCCESS;
@@ -126,15 +156,12 @@ public class EnemyBehavior : MonoBehaviour
         if (target == null) { Debug.LogError("Please reference target player."); return NodeState.FAILURE; }
         else
         {
-            //Uncomment after implementing waypoints
-            /*
             if (IsNotOptimalCover())
             {
                 MoveToTarget(optimalPos);
                 Debug.Log("Take Cover");
                 return NodeState.SUCCESS;
             }
-            */
 
             if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
             {
@@ -166,9 +193,8 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Update()
     {
-        //Behavior Tree has issues with _IdleRoot.Evaluate() that causes errors. Please help troubleshoot!
 		_IdleRoot.Evaluate();
-
+        target = FindNearestObjectWithTag("Player");
         //DetectTarget();
         /*
         if (targetDetected)
@@ -288,8 +314,10 @@ public class EnemyBehavior : MonoBehaviour
     private bool IsNotOptimalCover()
     {
         int index = 0;
+        //NullReferenceException is caused here.
         while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
         {
+            
             optimalPos = patrolPoints[index];
             index++;
         }

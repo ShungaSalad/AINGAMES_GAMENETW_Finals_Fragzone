@@ -117,7 +117,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         playStats.currentStamina = TempStamina;
         playerUI.UpdateCurrentStaminaUI(CurrentStam);
         playerUI.UpdateCurrentHPUI(CurrentHP);
-        playerUI.UpdateRoomInfo("Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount + " | You are: " + PhotonNetwork.LocalPlayer.NickName);
+        playerUI.UpdateRoomInfo("Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " | You are: " + PhotonNetwork.LocalPlayer.NickName);
     }
 
     void ControlCharacter()
@@ -214,7 +214,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         NetMaximumST = MaxStam;
         //Instantiate(playerUI, this.transform);
         playerUI.SetStatusUI(MaximumStam, CurrentStam, MaximumHP, CurrentHP);
-        playerUI.UpdateRoomInfo("Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount + " | You are: " + PhotonNetwork.LocalPlayer.NickName);
+        playerUI.UpdateRoomInfo("Room: " + PhotonNetwork.CurrentRoom.Name + " | Players: " + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " | You are: " + PhotonNetwork.LocalPlayer.NickName);
         Debug.Log("Done");
     }
 
