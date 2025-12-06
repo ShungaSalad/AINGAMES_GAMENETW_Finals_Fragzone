@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    public string EnemyName;
     [SerializeField]
     private GameObject bullet;
 
@@ -51,42 +52,20 @@ public class EnemyBehavior : MonoBehaviour
     private float moveSpeed;
     private float rotateSpeed;
 
+    public bool WaypointsEnabled;
+
     private void Start()
     {
+        //moveSpeed = 5.0f;
         isAlive = true;
 		InitializeBehaviorTree();
         turret = transform.GetChild(0).transform;
         bulletSpawnPoint = turret.GetChild(0).transform;
-        target = FindNearestObjectWithTag("Player");
     }
 
-    GameObject FindNearestObjectWithTag(string tag)
+    private void Update()
     {
-        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
-        float shortestDistance = Mathf.Infinity;
-        GameObject closestObject = null;
-
-        foreach (GameObject obj in objectsWithTag)
-        {
-            float distance = Vector3.Distance(transform.position, obj.transform.position);
-            if (distance < shortestDistance)
-            {
-                shortestDistance = distance;
-                closestObject = obj;
-            }
-        }
-        GameObject nearestObject = closestObject;
-
-        if (nearestObject != null)
-        {
-            Debug.Log("Nearest object with tag '" + tag + "' is: " + nearestObject.name);
-            return nearestObject;
-        }
-        else
-        {
-            Debug.Log("No object with tag '" + tag + "' found.");
-            return null;
-        }
+        _IdleRoot.Evaluate();
     }
 
     private void InitializeBehaviorTree()
@@ -119,19 +98,23 @@ public class EnemyBehavior : MonoBehaviour
 		
 	}
 	
-	//To do: Implement the node states based on the behavior tree implemented above via the InitializeBehaviorTree() function.
 	private NodeState EPatrol()
 	{
         if (target == null)
         {
-            //Activate after implementing waypoints
-            Patrol();
+            //Activate Patrol() after implementing waypoints
+            if (WaypointsEnabled)
+            {
+                Patrol();
+            }
             DetectTarget();
-            Debug.Log("Patrolling");
+            Debug.Log(EnemyName+": Patrolling");
             return NodeState.SUCCESS;
         }
-         Debug.Log("Patrolling Failed");
+        else
+        {
             return NodeState.FAILURE;
+        }
         
 	}
 	
@@ -143,71 +126,59 @@ public class EnemyBehavior : MonoBehaviour
         if (isAlive == false && randomNumber <= 20)
         {
             //Add Function to Drop Weapon with a boolean that describes it is a bomb
-            Debug.Log("BOOM");
+            Debug.Log(EnemyName + ": BOOM");
             return NodeState.SUCCESS;
         }
 
-        Debug.Log("Not Boom");
+        Debug.Log(EnemyName + ": Not Boom");
         return NodeState.FAILURE;
     }
 	
 	private NodeState ECover()
 	{
-        if (target == null) { Debug.LogError("Please reference target player."); return NodeState.FAILURE; }
+        if (target == null) { Debug.LogError(EnemyName + ": Please reference target player."); return NodeState.FAILURE; }
         else
         {
-            if (IsNotOptimalCover())
+            if (WaypointsEnabled)
             {
-                MoveToTarget(optimalPos);
-                Debug.Log("Take Cover");
-                return NodeState.SUCCESS;
+                if (IsNotOptimalCover())
+                {
+                    MoveToTarget(optimalPos);
+                    Debug.Log(EnemyName + ": Take Cover");
+                    return NodeState.SUCCESS;
+                }
+                if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
+                {
+                    MoveToTarget(optimalPos);
+                    Debug.Log(EnemyName + ": Take Cover");
+                    return NodeState.SUCCESS;
+                }
+                else
+                {
+                    Debug.Log(EnemyName + ": Take Cover Failed");
+                    return NodeState.FAILURE;
+                }
             }
-
-            if (Vector3.Distance(target.transform.position, transform.position) <= enemyCloseProximity)
-            {
-                //MoveToTarget(optimalPos);
-                Debug.Log("Take Cover");
-                return NodeState.SUCCESS;
-            }
-            Debug.Log("Take Cover Failed");
-            return NodeState.FAILURE;
+            else { return NodeState.FAILURE; }
         }
 	}
 	
 	private NodeState EShoot()
 	{
-        if (target == null) { Debug.LogError("Please reference target player."); return NodeState.FAILURE; }
+        if (target == null) { Debug.LogError(EnemyName+": Please reference target player."); return NodeState.FAILURE; }
         else
         {
             if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange * (firingRangePercent / 100)))
             {
                 UpdateWeapon();
-                Debug.Log("Shoot");
+                Debug.Log(EnemyName + ": Shoot");
                 return NodeState.SUCCESS;
             }
 
-            Debug.Log("Don't Shoot");
+            Debug.Log(EnemyName + ": Don't Shoot");
             return NodeState.FAILURE;
         }
 	}
-
-    private void Update()
-    {
-		_IdleRoot.Evaluate();
-        target = FindNearestObjectWithTag("Player");
-        //DetectTarget();
-        /*
-        if (targetDetected)
-        {
-            UpdateControl();
-            UpdateWeapon();
-        }
-        else
-        {
-            Patrol();
-        }
-        */
-    }
 
     private void DetectTarget()
     {
@@ -219,12 +190,18 @@ public class EnemyBehavior : MonoBehaviour
             {
                 targetDetected = true;
                 target = hit.collider.gameObject;
-                Debug.Log("You are Detected");
+                Debug.Log(EnemyName + ": You are Detected");
                 return;
 
             }
 
         }
+        else
+        {
+            targetDetected = false;
+            target = null;
+        }
+            
 
         /*
         float distance = Vector3.Distance(transform.position, target.transform.position);
@@ -244,9 +221,6 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
         */
-        targetDetected = true;
-        target = null;
-
     }
 
     private void Patrol()
@@ -257,9 +231,6 @@ public class EnemyBehavior : MonoBehaviour
         Vector3 direction = (patrolTarget.position - transform.position).normalized;
 
         MoveToTarget(patrolTarget);
-       // transform.position = Vector3.MoveTowards(transform.position, patrolTarget.position, patrolSpeed * Time.deltaTime);
-       //Quaternion targetRot = Quaternion.LookRotation(direction);
-       //.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 2f);
 
         if (Vector3.Distance(transform.position, patrolTarget.position) < waypointTolerance)
         {
@@ -283,7 +254,7 @@ public class EnemyBehavior : MonoBehaviour
             Vector3 direction = (target.transform.position - transform.position).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turretRotSpeed * 0.2f);
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, patrolSpeed* 1.075f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, patrolSpeed * 1.075f * Time.deltaTime);
         }
     }
 
@@ -313,56 +284,29 @@ public class EnemyBehavior : MonoBehaviour
 
     private bool IsNotOptimalCover()
     {
-        if (patrolPoints == null || patrolPoints.Count == 0)
+        if (patrolPoints == null || patrolPoints.Count == 0) { return false; }
+        else
         {
-            
-            return false;
-        }
-
-        int index = 0;
-
-        
-        optimalPos = patrolPoints[index];
-
-        while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
-        {
-            
-            index++;
-            if (index >= patrolPoints.Count)
+            int index = 0;
+            optimalPos = patrolPoints[index];
+            while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
             {
-                
-                break;
+                index++;
+                if (index >= patrolPoints.Count) { break; }
+                else
+                {
+                    optimalPos = patrolPoints[index];
+                }
+
             }
 
-            
-            optimalPos = patrolPoints[index];
+            if (optimalPos != null && Vector3.Distance(transform.position, optimalPos.position) > waypointTolerance)
+            {
+                return true;
+            }
+            return false;
         }
-
-        
-        if (optimalPos != null && Vector3.Distance(transform.position, optimalPos.position) > waypointTolerance)
-        {
-            return true;
-        }
-        return false;
     }
-
-    // Lines that are causing errors
-    /*
-    int index = 0;
-    //NullReferenceException is caused here.
-    while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
-    {
-
-        optimalPos = patrolPoints[index];
-        index++;
-    }
-    if(Vector3.Distance(transform.position, optimalPos.position) > waypointTolerance)
-    {
-        return true;
-    }
-    return false;
-}
-    */
 
     public void MoveToTarget(Transform currentTarget)
     {
@@ -376,3 +320,21 @@ public class EnemyBehavior : MonoBehaviour
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
     }
 }
+
+// IsNotOptimalCover() - Lines that are causing errors
+/*
+int index = 0;
+//NullReferenceException is caused here.
+while ((Vector3.Distance(targetPos, optimalPos.position) <= enemyCloseProximity) && (Vector3.Distance(targetPos, optimalPos.position) > detectionRange))
+{
+
+    optimalPos = patrolPoints[index];
+    index++;
+}
+if(Vector3.Distance(transform.position, optimalPos.position) > waypointTolerance)
+{
+    return true;
+}
+return false;
+}
+*/

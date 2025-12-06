@@ -2065,6 +2065,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Sniper Enemy 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
       value: 1
       objectReference: {fileID: 0}
@@ -2219,6 +2227,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Handgun Enemy 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
       value: 1
       objectReference: {fileID: 0}
@@ -2327,6 +2343,14 @@ PrefabInstance:
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Bazooka Enemy 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
@@ -3011,6 +3035,14 @@ PrefabInstance:
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: A. Rifle Enemy 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
@@ -5423,6 +5455,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: A. Rifle Enemy 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
       value: 1
       objectReference: {fileID: 0}
@@ -5565,6 +5605,14 @@ PrefabInstance:
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Handgun Enemy 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
@@ -6232,6 +6280,14 @@ PrefabInstance:
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Bazooka Enemy 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
@@ -7634,6 +7690,14 @@ PrefabInstance:
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: A. Rifle Enemy 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
@@ -13663,6 +13727,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Handgun Enemy 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
       value: 1
       objectReference: {fileID: 0}
@@ -15776,6 +15848,14 @@ PrefabInstance:
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: A. Rifle Enemy 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
@@ -18625,6 +18705,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Sniper Enemy 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
       value: 1
       objectReference: {fileID: 0}
@@ -20533,6 +20621,14 @@ PrefabInstance:
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Handgun Enemy 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
@@ -22790,6 +22886,14 @@ PrefabInstance:
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: EnemyName
+      value: Handgun Enemy 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
+      propertyPath: WaypointsEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653899083189907812, guid: 5b76d1ef70f2eca488c5455909771e17, type: 3}
       propertyPath: waypointTolerance
