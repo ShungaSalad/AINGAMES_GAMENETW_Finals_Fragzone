@@ -42,7 +42,6 @@ public class Bullet : MonoBehaviourPun
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!photonView.IsMine) return;
         ContactPoint contact = collision.contacts[0];
 
         if (collision.collider.CompareTag("Enemy"))
@@ -50,10 +49,7 @@ public class Bullet : MonoBehaviourPun
             CharacterStats enemy = collision.collider.GetComponent<CharacterStats>();
             if (enemy != null)
             {
-                enemy.photonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
-                Instantiate(explosion, contact.point, Quaternion.identity);
-                // Destroy gameobject since it already collided with something
-                PhotonNetwork.Destroy(gameObject);
+                //enemy.photonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
                 Debug.LogWarning("Bullet Explode 2");
             }
         }
@@ -63,16 +59,14 @@ public class Bullet : MonoBehaviourPun
             CharacterStats player = collision.collider.GetComponent<CharacterStats>();
             if (player != null)
             {
-                player.photonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
-                Instantiate(explosion, contact.point, Quaternion.identity);
-                // Destroy gameobject since it already collided with something
-                PhotonNetwork.Destroy(gameObject);
+                //player.photonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
+                
                 Debug.LogWarning("Bullet Explode 3");
             }
         }
         Debug.LogWarning("Bullet Explode");
         Instantiate(explosion, contact.point, Quaternion.identity);
         // Destroy gameobject since it already collided with something
-        PhotonNetwork.Destroy(gameObject);
+        Destroy(gameObject);
     }
 }
