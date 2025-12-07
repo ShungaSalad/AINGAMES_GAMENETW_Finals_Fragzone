@@ -1,7 +1,8 @@
-using UnityEngine;
+using Photon.Pun;
 using System.Collections;
+using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviourPun
 {
     //Explosion Effect
     [SerializeField]
@@ -26,6 +27,7 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
+
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 100f))
         {
             transform.position = Vector3.MoveTowards(transform.position, hit.point, speed * Time.deltaTime);
@@ -34,12 +36,19 @@ public class Bullet : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+
+
+    void OnCollisionEnter(Collision collision)
     {
-        // Spawn the explosion effect on the collision point
-        ContactPoint contact = collision.contacts[0];
-        Instantiate(explosion, contact.point, Quaternion.identity);
-        // Destroy gameobject since it already collided with something
-        Destroy(gameObject);
+        if (!photonView.IsMine) return;
+
+        if (collision.collider.CompareTag("Enemy"))
+        {
+            CharacterStats enemy = collision.collider.GetComponent<CharacterStats>();
+            if (enemy != null)
+            {
+                enemy.photonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
+            }
+        }
     }
 }

@@ -229,6 +229,7 @@ public class PlayerCharacter : MonoBehaviourPun, IPunObservable, IPlayerControll
         if (collision.gameObject.CompareTag("Bullet"))
         {
             hpman.TakeDamage(10);
+            playerUI.TakeDamage(10);
         }
     }
 

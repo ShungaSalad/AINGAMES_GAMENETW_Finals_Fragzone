@@ -16,6 +16,17 @@ public class PlayerUIManager : MonoBehaviourPun
     [SerializeField]
     private TMP_Text roomInfo;
 
+    CharacterStats PlayerUIStats;
+
+    /*
+    private void Start()
+    {
+        if (!photonView.IsMine) { return; }
+        CharacterStats PlayerUIStats = GetComponent<CharacterStats>();
+        SetStatusUI(PlayerUIStats);
+        Debug.Log("Stats Taken: " + PlayerUIStats.ToString());
+    }
+    */
 
     private void SetHP()
     {
@@ -44,6 +55,13 @@ public class PlayerUIManager : MonoBehaviourPun
         currentStamina = setCurrentStamina;
         SetStamina();
         //Debug.Log("Stamina Updated");
+    }
+
+    [PunRPC]
+    public void TakeDamage(float damage)
+    {
+        currentHP -= damage;
+        SetHP();
     }
 
     [PunRPC]

@@ -99,7 +99,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
 
         //activates camera on spawn
         newPlayer.GetComponentInChildren<Camera>().enabled = true;
-        newPlayer.GetComponentInChildren<PlayerUIManager>().enabled = true;
+        //newPlayer.GetComponentInChildren<PlayerUIManager>().enabled = true;
     }
 
 

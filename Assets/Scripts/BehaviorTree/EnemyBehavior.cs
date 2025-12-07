@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -79,6 +80,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Update()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
         _IdleRoot.Evaluate();
         DetectTarget();
         if (target != null)

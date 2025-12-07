@@ -47,6 +47,10 @@ MonoBehaviour:
   - UpdateRoomInfo
   - ChangeStamina
   - isABomb
+  - GetWeaponType
+  - IsABomb
+  - PickUp
+  - RPC_Release
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

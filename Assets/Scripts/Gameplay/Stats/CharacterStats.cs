@@ -17,6 +17,7 @@ public class CharacterStats : MonoBehaviourPun
         photonView.RPC("SetStatusUI", RpcTarget.AllBuffered, maxStamina, currentStamina, maxHP, currentHP);
     }
     */
+    
 
     [PunRPC]
     public void TakeDamage(float amount)
@@ -27,6 +28,7 @@ public class CharacterStats : MonoBehaviourPun
         {
             Die();
         }
+        Debug.Log("Taking Damage = " + amount);
     }
 
     [PunRPC]
