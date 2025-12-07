@@ -27,12 +27,14 @@ public class Bullet : MonoBehaviourPun
 
     private void Update()
     {
-
+        transform.position += transform.forward * speed * Time.deltaTime;
+        /*
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 100f))
         {
             transform.position = Vector3.MoveTowards(transform.position, hit.point, speed * Time.deltaTime);
         }
-        else { transform.position += transform.forward * speed * Time.deltaTime; }
+        else {  }
+        */
     }
 
 
@@ -41,6 +43,7 @@ public class Bullet : MonoBehaviourPun
     void OnCollisionEnter(Collision collision)
     {
         if (!photonView.IsMine) return;
+        ContactPoint contact = collision.contacts[0];
 
         if (collision.collider.CompareTag("Enemy"))
         {
@@ -48,7 +51,28 @@ public class Bullet : MonoBehaviourPun
             if (enemy != null)
             {
                 enemy.photonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
+                Instantiate(explosion, contact.point, Quaternion.identity);
+                // Destroy gameobject since it already collided with something
+                PhotonNetwork.Destroy(gameObject);
+                Debug.LogWarning("Bullet Explode 2");
             }
         }
+
+        if (collision.collider.CompareTag("Player"))
+        {
+            CharacterStats player = collision.collider.GetComponent<CharacterStats>();
+            if (player != null)
+            {
+                player.photonView.RPC("TakeDamage", RpcTarget.AllBuffered, damage);
+                Instantiate(explosion, contact.point, Quaternion.identity);
+                // Destroy gameobject since it already collided with something
+                PhotonNetwork.Destroy(gameObject);
+                Debug.LogWarning("Bullet Explode 3");
+            }
+        }
+        Debug.LogWarning("Bullet Explode");
+        Instantiate(explosion, contact.point, Quaternion.identity);
+        // Destroy gameobject since it already collided with something
+        PhotonNetwork.Destroy(gameObject);
     }
 }
