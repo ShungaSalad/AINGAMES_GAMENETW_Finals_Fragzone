@@ -1,11 +1,16 @@
 using Photon.Pun.Demo.Asteroids;
 using UnityEngine;
+using Photon.Pun;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviourPun
 {
     [SerializeField]
     GameObject bullet;
+    [SerializeField]
+    private int maxAmmo;
 
+    public bool isBomb;
+    public int currentAmmo;
     private Transform bulletSpawnPoint;
 
     //[SerializeField]
@@ -25,5 +30,11 @@ public class Weapon : MonoBehaviour
     {
         //spawn a bullet
         GameObject projectile=Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+    }
+
+    [PunRPC]
+    public void isABomb(bool bomb)
+    {
+        isBomb = bomb;
     }
 }

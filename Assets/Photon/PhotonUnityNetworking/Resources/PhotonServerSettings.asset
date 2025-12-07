@@ -46,6 +46,7 @@ MonoBehaviour:
   - SetStatusUI
   - UpdateRoomInfo
   - ChangeStamina
+  - isABomb
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

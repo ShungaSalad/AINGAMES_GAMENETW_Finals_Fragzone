@@ -73,7 +73,7 @@ public class EnemyBehavior : MonoBehaviour
         rotateSpeed = 50.0f; // added this
         isAlive = true;
 		InitializeBehaviorTree();
-        turret = transform.GetChild(0).transform;
+        turret = transform.GetChild(2).transform;
         bulletSpawnPoint = turret.GetChild(0).transform;
     }
 
@@ -404,14 +404,14 @@ return NodeState.FAILURE;
 
     private void UpdateWeapon()
     {
-        if (!targetDetected || target == null) return;
         float distance = Vector3.Distance(transform.position, target.transform.position);
         Vector3 direction = (target.transform.position - transform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
-        turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, targetRotation, Time.deltaTime * turretRotSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turretRotSpeed);
 
-        if (Time.time >= elapsedTime && distance < detectionRange * firingRangePercent/100) //Shoot only when static
+        if (Time.time >= elapsedTime) //Shoot only when static
         {
+            Debug.LogWarning(EnemyName + ": Shot");
             elapsedTime = Time.time + shootDelay;
             GameObject projectile = Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         }
