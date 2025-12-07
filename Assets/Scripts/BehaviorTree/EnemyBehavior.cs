@@ -16,7 +16,8 @@ public class EnemyBehavior : MonoBehaviour
     private Transform optimalPos;
 
     [SerializeField]
-    private GameObject target; 
+    private GameObject target;
+    private GameObject potentialTarget = null;
 
     //Bullet shooting rate
     public float shootDelay = 2.0f;
@@ -78,8 +79,17 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Update()
     {
-        DetectTarget();
         _IdleRoot.Evaluate();
+        DetectTarget();
+        if (target != null)
+        {
+            if (IsTargetOutOfRange())
+            {
+                target = null;
+                targetDetected = false;
+                potentialTarget = null;
+            }
+        }
     }
 
     private void InitializeBehaviorTree()
@@ -117,19 +127,20 @@ public class EnemyBehavior : MonoBehaviour
         // The target is now set by DetectTarget() in Update()
         if (target == null)
         {
+            Debug.Log(EnemyName + ": Target is " + target);
             if (WaypointsEnabled)
             {
                 Patrol();
+                Debug.Log(EnemyName + ": Patrolling");
+                return NodeState.SUCCESS;
             }
-
-            
-
-            Debug.Log(EnemyName + ": Patrolling");
-            return NodeState.SUCCESS;
+            Debug.Log(EnemyName + ": Patrol Failed");
+            return NodeState.FAILURE;
         }
+
         else
         {
-            
+            Debug.Log(EnemyName + ": Patrol Failed");
             return NodeState.FAILURE;
         }
     }
@@ -194,17 +205,7 @@ return NodeState.FAILURE;
         {
             if (WaypointsEnabled)
             {
-                if (IsTargetOutOfRange())
-                {
-                    target = null;
-                    targetDetected = false;
-                }
-                if (Vector3.Distance(target.transform.position, transform.position) > detectionRange)
-                {
-                    target = null;
-                    targetDetected = false;
-
-                }
+                
                 if (IsNotOptimalCover())
                 {
                     MoveToTarget(optimalPos);
@@ -225,7 +226,11 @@ return NodeState.FAILURE;
                     return NodeState.FAILURE;
                 }
             }
-            else { return NodeState.FAILURE; }
+            else 
+            {
+                Debug.Log(EnemyName + ": Take Cover Failed");
+                return NodeState.FAILURE;
+            }
         }
 	}
 	
@@ -234,22 +239,15 @@ return NodeState.FAILURE;
         if (target == null) { Debug.LogError(EnemyName+": Please reference target player."); return NodeState.FAILURE; }
         else
         {
-
-            if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange * (firingRangePercent / 100)))
+            if (agent != null && agent.isActiveAndEnabled)
             {
-                
-                if (agent != null && agent.isActiveAndEnabled)
-                {
-                    agent.SetDestination(transform.position); 
-                }
-
-                UpdateWeapon();
-                Debug.Log(EnemyName + ": Shoot");
-                return NodeState.SUCCESS;
+                agent.SetDestination(transform.position);
             }
 
-            Debug.Log(EnemyName + ": Don't Shoot");
-            return NodeState.FAILURE;
+            UpdateWeapon();
+            Debug.Log(EnemyName + ": Shoot");
+            return NodeState.SUCCESS;
+
             /*
             if (Vector3.Distance(target.transform.position, transform.position) <= (detectionRange * (firingRangePercent / 100)))
             {
@@ -268,8 +266,6 @@ return NodeState.FAILURE;
     {
         
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRange);
-
-        GameObject potentialTarget = null;
 
         foreach (var hitCollider in hitColliders)
         {
@@ -294,12 +290,7 @@ return NodeState.FAILURE;
         {
             targetDetected = true;
             target = potentialTarget;
-            Debug.Log(EnemyName + ": You are Detected");
-        }
-        else
-        {
-            targetDetected = false;
-            target = null;
+            Debug.Log(EnemyName + ": Detected " + target);
         }
 
         /*
@@ -327,8 +318,6 @@ return NodeState.FAILURE;
 
         }
         */
-        targetDetected = false;
-        target = null;
         /*
         float distance = Vector3.Distance(transform.position, target.transform.position);
 
